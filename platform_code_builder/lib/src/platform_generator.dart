@@ -126,11 +126,19 @@ class _Visitor extends RecursiveAstVisitor<void> {
         var isNot = _not == null
             ? false
             : ((_not as NamedExpression).expression as BooleanLiteral).value;
+        var _code = annotation.arguments!.arguments.firstWhereOrNull((arg) =>
+            arg is NamedExpression && arg.name.label.toString() == 'code');
 
         if (platformTypeMaskCode.binaryMatch(parsePlatformTypeExpression(
                 (_platformType as dynamic).expression.toString())) !=
             isNot) {
-          if (_renameTo != null) {
+          if (_code != null) {
+            var __code = (_code as NamedExpression).expression.toString();
+            __code = __code
+                .trim()
+                .replaceAll(RegExp('^[\'\"]+|[\'\"]+\$', multiLine: true), '');
+            _renames[CodeRange.formEntry(node)] = __code.trim();
+          } else if (_renameTo != null) {
             var __renameTo =
                 (_renameTo as NamedExpression).expression.toString();
             var nameNode = handleRename?.call();

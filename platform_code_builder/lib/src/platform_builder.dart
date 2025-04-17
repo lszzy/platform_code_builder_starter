@@ -12,14 +12,8 @@ import 'package:yaml/yaml.dart';
 import 'platform_generator.dart';
 
 Builder platformBuilder(BuilderOptions options) {
-  var currentPlatform = buildTypes();
-  var selectedPlatform = options.config['platform'] ?? currentPlatform;
-  if (selectedPlatform == null) {
-    throw Exception('Please specify the platform!');
-  }
-
+  var selectedPlatform = buildTypes(options);
   var platformMaskCode = PlatformType.fromName(selectedPlatform);
-
   if (platformMaskCode.toRadixString(2).replaceAll('0', '').length != 1) {
     throw Exception("Union type is not supported!");
   }
@@ -64,7 +58,7 @@ Builder platformBuilder(BuilderOptions options) {
   );
 }
 
-String? buildTypes() {
+String buildTypes(BuilderOptions options) {
   var allTypes = <String, int>{};
   var yaml = loadYaml(File('./platform_code_options.yaml').readAsStringSync());
   var platformTypes = (yaml['platform_types'] as YamlList?) ?? [];
@@ -77,6 +71,11 @@ String? buildTypes() {
     allTypes[unionType.key] = unionType.value
         .map((type) => allTypes[type]!)
         .reduce((value, ele) => value | ele);
+  }
+
+  var selectedPlatform = options.config['platform'] ?? yaml['current_platform'];
+  if (selectedPlatform == null) {
+    throw Exception('Please specify the platform!');
   }
 
   final platformTypeClass = Class(
@@ -96,9 +95,32 @@ String? buildTypes() {
             )
             ..lambda = true
             ..body = Code(
-                '{${allTypes.keys.map((key) => "'$key': $key").join(', ')}}[name]!'),
+                '{${allTypes.keys.map((key) => "'$key': $key").join(', ')}}[name] ?? $selectedPlatform'),
         ),
       )
+      ..methods.add(
+        Method(
+          (b) => b
+            ..name = 'getName'
+            ..static = true
+            ..returns = Reference('String')
+            ..requiredParameters.add(
+              (ParameterBuilder()
+                    ..type = Reference('int')
+                    ..name = 'type')
+                  .build(),
+            )
+            ..lambda = true
+            ..body = Code(
+                '{${allTypes.keys.map((key) => "$key: '$key'").join(', ')}}[type] ?? \'$selectedPlatform\''),
+        ),
+      )
+      ..fields.add((FieldBuilder()
+            ..name = 'current'
+            ..static = true
+            ..modifier = FieldModifier.constant
+            ..assignment = Code(selectedPlatform.toString()))
+          .build())
       ..fields.addAll(
         allTypes.keys.map(
           (key) => (FieldBuilder()
@@ -123,5 +145,5 @@ String? buildTypes() {
     exit(1);
   }
 
-  return yaml['current_platform'];
+  return selectedPlatform;
 }

@@ -1,28 +1,28 @@
-@PlatformDetector()
+@PlatformAvailable()
 import 'package:flutter/material.dart';
 import 'package:platform_code_builder/platform_code_builder.dart';
 
-@PlatformSpec(platformType: PlatformType.desktop)
+@Available(platform: PlatformType.desktop)
 class Test01 {
-  @PlatformSpec(platformType: PlatformType.mac)
+  @Available(platform: PlatformType.mac)
   getContainer() {
     return Container();
   }
 
-  @PlatformSpec(platformType: PlatformType.linux, renameTo: "getContainer")
+  @Available(platform: PlatformType.linux, rename: "getContainer")
   getContainerTest() {
     return Container();
   }
 }
 
-@PlatformSpec(platformType: PlatformType.android, renameTo: "Test01")
+@Available(platform: PlatformType.android, rename: "Test01")
 class Test02 {
-  @PlatformSpec(platformType: PlatformType.vivo)
+  @Available(platform: PlatformType.vivo)
   getContainer() {
     return Container();
   }
 
-  @PlatformSpec(platformType: PlatformType.xiaomi, renameTo: "getContainer")
+  @Available(platform: PlatformType.xiaomi, rename: "getContainer")
   getContainerTest() {
     return Container();
   }

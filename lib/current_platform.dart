@@ -1,32 +1,32 @@
-@PlatformDetector()
+@PlatformAvailable()
 import 'package:platform_code_builder/platform_code_builder.dart';
 
-@PlatformSpec(platformType: PlatformType.xiaomi, renameTo: 'current')
+@Available(platform: PlatformType.xiaomi, rename: 'current')
 const String currentIsXiaomi = 'xiaomi';
 
-@PlatformSpec(platformType: PlatformType.huawei, renameTo: 'current')
+@Available(platform: PlatformType.huawei, rename: 'current')
 const String currentIsHW = 'huawei';
 
-@PlatformSpec(platformType: PlatformType.oppo, renameTo: 'current')
+@Available(platform: PlatformType.oppo, rename: 'current')
 const String currentIsOppo = 'oppo';
 
-@PlatformSpec(platformType: PlatformType.vivo, renameTo: 'current')
+@Available(platform: PlatformType.vivo, rename: 'current')
 const String currentIsVivo = 'vivo';
 
-@PlatformSpec(platformType: PlatformType.other_android, renameTo: 'current')
+@Available(platform: PlatformType.other_android, rename: 'current')
 const String currentIsOA = 'other_android';
 
-@PlatformSpec(platformType: PlatformType.iphone, renameTo: 'current')
+@Available(platform: PlatformType.iphone, rename: 'current')
 const String currentIsIP = 'iphone';
 
-@PlatformSpec(platformType: PlatformType.linux, renameTo: 'current')
+@Available(platform: PlatformType.linux, rename: 'current')
 const String currentIsLinux = 'linux';
 
-@PlatformSpec(platformType: PlatformType.mac, renameTo: 'current')
+@Available(platform: PlatformType.mac, rename: 'current')
 const String currentIsMac = 'mac';
 
-@PlatformSpec(platformType: PlatformType.windows, renameTo: 'current')
+@Available(platform: PlatformType.windows, rename: 'current')
 const String currentIsWin = 'windows';
 
-@PlatformSpec(platformType: PlatformType.web, renameTo: 'current')
+@Available(platform: PlatformType.web, rename: 'current')
 const String currentIsWeb = 'web';

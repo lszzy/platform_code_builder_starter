@@ -45,7 +45,7 @@ class CodeRange {
   bool contains(CodeRange other) => offset <= other.offset && end >= other.end;
 }
 
-class PlatformGenerator extends GeneratorForAnnotation<PlatformAvailable> {
+class PlatformGenerator extends GeneratorForAnnotation<PlatformBuilder> {
   final int platformTypeMaskCode;
   final List<Edge> allImports;
 

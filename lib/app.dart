@@ -1,8 +1,6 @@
-@PlatformAvailable()
+@PlatformBuilder()
 import 'package:flutter/material.dart';
 import 'package:platform_code_builder/platform_code_builder.dart';
-import 'package:platform_code_builder_starter/current_platform.p.dart'
-    as current_platform;
 import 'package:platform_code_builder_starter/platform_dialog.p.dart';
 
 class MyApp extends StatelessWidget {
@@ -62,7 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset('assets/logo.png'),
-            const Text('Current platform is ${current_platform.current}'),
+            Text(
+                'Current platform is ${PlatformType.getName(PlatformType.current)}'),
             TextButton(
               onPressed: () {
                 PlatformDialog.show(context);

@@ -1,4 +1,4 @@
-@PlatformAvailable()
+@PlatformBuilder()
 @Available(platform: PlatformType.ios)
 import 'package:flutter/cupertino.dart';
 @Unavailable(platform: PlatformType.ios)

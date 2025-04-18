@@ -1,4 +1,4 @@
-@PlatformAvailable()
+@PlatformBuilder()
 import 'package:flutter/material.dart';
 import 'package:platform_code_builder/platform_code_builder.dart';
 

@@ -1,5 +1,5 @@
-class PlatformAvailable {
-  const PlatformAvailable();
+class PlatformBuilder {
+  const PlatformBuilder();
 }
 
 class Available {

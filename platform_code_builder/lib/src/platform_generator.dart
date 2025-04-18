@@ -64,7 +64,7 @@ class PlatformGenerator extends GeneratorForAnnotation<PlatformBuilder> {
       List<String> exceptions = [''];
       hasImport.forEach((ele) {
         exceptions.add(
-            '${chalk.yellow('[WARNING]')} Do not import [lib${ele.to}] directly in [lib${ele.from}], use [lib${ele.to.replaceFirst('.dart', '.p.dart')}] instead!');
+            '${chalk.yellow('[WARNING]')} Do not import [lib${ele.to}] directly in [lib${ele.from}], use [lib${ele.to.replaceFirst('.dart', '.platform.dart')}] instead!');
       });
       stderr.writeln(exceptions.join('\n'));
     }

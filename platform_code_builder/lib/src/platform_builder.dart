@@ -12,7 +12,8 @@ import 'package:yaml/yaml.dart';
 import 'platform_generator.dart';
 
 Builder platformBuilder(BuilderOptions options) {
-  var yaml = loadYaml(File('./platform_options.yaml').readAsStringSync());
+  var yaml = loadYaml(
+      File('./platform_code_builder/platform.yaml').readAsStringSync());
   var selectedPlatform = buildTypes(options, yaml);
   var platformMaskCode = PlatformType.fromName(selectedPlatform);
   if (platformMaskCode.toRadixString(2).replaceAll('0', '').length != 1) {
@@ -41,10 +42,11 @@ Builder platformBuilder(BuilderOptions options) {
 
   var sources = Directory('./lib').listSync(recursive: true);
   var platformSources =
-      sources.where((source) => source.path.endsWith('.p.dart'));
+      sources.where((source) => source.path.endsWith('.platform.dart'));
   for (var platformSource in platformSources) {
     if (sources.any((source) =>
-        source.path == platformSource.path.replaceFirst('.p.dart', '.dart'))) {
+        source.path ==
+        platformSource.path.replaceFirst('.platform.dart', '.dart'))) {
       platformSource.deleteSync();
     }
   }
@@ -54,7 +56,7 @@ Builder platformBuilder(BuilderOptions options) {
       platformMaskCode,
       buildModel(Directory('./lib'), showTree: false).edges,
     ),
-    generatedExtension: '.p.dart',
+    generatedExtension: '.platform.dart',
     header: '$defaultFileHeader\n// current platform is [$selectedPlatform]',
     formatOutput: (code) => DartFormatter(fixes: StyleFix.all).format(code),
   );

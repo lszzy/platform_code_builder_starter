@@ -1,7 +1,7 @@
 @PlatformBuilder()
 import 'package:flutter/material.dart';
 import 'package:platform_code_builder/platform_code_builder.dart';
-import 'package:platform_code_builder_starter/platform_dialog.p.dart';
+import 'package:platform_code_builder_starter/platform_dialog.platform.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

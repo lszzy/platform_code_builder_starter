@@ -1,18 +1,27 @@
-class PlatformDetector {
-  const PlatformDetector();
+class PlatformAvailable {
+  const PlatformAvailable();
 }
 
-/// 暂不支持renameTo和code同时生效，优先级：code>renameTo
-class PlatformSpec {
-  final int platformType;
-  final String? renameTo;
-  final bool not;
+class Available {
+  final int platform;
+  final String? rename;
   final String? code;
 
-  const PlatformSpec({
-    required this.platformType,
-    this.not = false,
-    this.renameTo,
+  const Available({
+    required this.platform,
+    this.rename,
+    this.code,
+  });
+}
+
+class Unavailable {
+  final int platform;
+  final String? rename;
+  final String? code;
+
+  const Unavailable({
+    required this.platform,
+    this.rename,
     this.code,
   });
 }

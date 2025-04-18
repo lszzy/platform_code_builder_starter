@@ -12,13 +12,15 @@ import 'package:yaml/yaml.dart';
 import 'platform_generator.dart';
 
 Builder platformBuilder(BuilderOptions options) {
-  var selectedPlatform = buildTypes(options);
+  var yaml = loadYaml(File('./platform_options.yaml').readAsStringSync());
+  var selectedPlatform = buildTypes(options, yaml);
   var platformMaskCode = PlatformType.fromName(selectedPlatform);
   if (platformMaskCode.toRadixString(2).replaceAll('0', '').length != 1) {
     throw Exception("Union type is not supported!");
   }
 
-  var file = File('bin/handle_platform.dart');
+  var platformScript = yaml['platform_script'] ?? 'bin/platform_script.dart';
+  var file = File('$platformScript');
   if (file.existsSync()) {
     var processResult = Process.runSync(
       Platform.executable,
@@ -58,9 +60,8 @@ Builder platformBuilder(BuilderOptions options) {
   );
 }
 
-String buildTypes(BuilderOptions options) {
+String buildTypes(BuilderOptions options, dynamic yaml) {
   var allTypes = <String, int>{};
-  var yaml = loadYaml(File('./platform_code_options.yaml').readAsStringSync());
   var platformTypes = (yaml['platform_types'] as YamlList?) ?? [];
   for (int i = 0; i < platformTypes.length; i++) {
     allTypes[platformTypes[i]] = 1 << i;

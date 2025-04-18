@@ -45,7 +45,7 @@ class CodeRange {
   bool contains(CodeRange other) => offset <= other.offset && end >= other.end;
 }
 
-class PlatformGenerator extends GeneratorForAnnotation<PlatformDetector> {
+class PlatformGenerator extends GeneratorForAnnotation<PlatformAvailable> {
   final int platformTypeMaskCode;
   final List<Edge> allImports;
 
@@ -111,40 +111,32 @@ class _Visitor extends RecursiveAstVisitor<void> {
 
   _handleNode(AnnotatedNode node, {HandleRename? handleRename}) {
     if (node.metadata.isNotEmpty) {
-      var annotation = node.metadata
-          .singleWhereOrNull((element) => element.name.name == 'PlatformSpec');
+      var annotation = node.metadata.singleWhereOrNull((element) =>
+          ['Available', 'Unavailable'].contains(element.name.name));
       if (annotation != null && annotation.arguments != null) {
-        var _platformType = annotation.arguments!.arguments.firstWhere((arg) =>
-            arg is NamedExpression &&
-            arg.name.label.toString() == 'platformType');
-        var _renameTo = annotation.arguments!.arguments.firstWhereOrNull(
-            (arg) =>
-                arg is NamedExpression &&
-                arg.name.label.toString() == 'renameTo');
-        var _not = annotation.arguments!.arguments.firstWhereOrNull((arg) =>
-            arg is NamedExpression && arg.name.label.toString() == 'not');
-        var isNot = _not == null
-            ? false
-            : ((_not as NamedExpression).expression as BooleanLiteral).value;
-        var _code = annotation.arguments!.arguments.firstWhereOrNull((arg) =>
+        var platform = annotation.arguments!.arguments.firstWhere((arg) =>
+            arg is NamedExpression && arg.name.label.toString() == 'platform');
+        var rename = annotation.arguments!.arguments.firstWhereOrNull((arg) =>
+            arg is NamedExpression && arg.name.label.toString() == 'rename');
+        var isNot = annotation.name.name == 'Unavailable';
+        var code = annotation.arguments!.arguments.firstWhereOrNull((arg) =>
             arg is NamedExpression && arg.name.label.toString() == 'code');
 
         if (platformTypeMaskCode.binaryMatch(parsePlatformTypeExpression(
-                (_platformType as dynamic).expression.toString())) !=
+                (platform as dynamic).expression.toString())) !=
             isNot) {
-          if (_code != null) {
-            var __code = (_code as NamedExpression).expression.toString();
-            __code = __code
+          if (code != null) {
+            var _code = (code as NamedExpression).expression.toString();
+            _code = _code
                 .trim()
                 .replaceAll(RegExp('^[\'\"]+|[\'\"]+\$', multiLine: true), '');
-            _renames[CodeRange.formEntry(node)] = __code.trim();
-          } else if (_renameTo != null) {
-            var __renameTo =
-                (_renameTo as NamedExpression).expression.toString();
+            _renames[CodeRange.formEntry(node)] = _code.trim();
+          } else if (rename != null) {
+            var _rename = (rename as NamedExpression).expression.toString();
             var nameNode = handleRename?.call();
             if (nameNode != null) {
               _renames[CodeRange.formEntry(nameNode)] =
-                  __renameTo.substring(1, __renameTo.length - 1);
+                  _rename.substring(1, _rename.length - 1);
             }
           }
         } else {

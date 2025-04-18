@@ -1,25 +1,26 @@
-@PlatformDetector()
+@PlatformAvailable()
 import 'package:flutter/material.dart';
 import 'package:platform_code_builder/platform_code_builder.dart';
-import 'package:platform_code_builder_starter/current_platform.p.dart' as current_platform;
+import 'package:platform_code_builder_starter/current_platform.p.dart'
+    as current_platform;
 import 'package:platform_code_builder_starter/platform_dialog.p.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  @PlatformSpec(platformType: PlatformType.desktop | PlatformType.web, renameTo: 'scale')
+  @Available(platform: PlatformType.desktop | PlatformType.web, rename: 'scale')
   final scaleForDesktopAndWeb = 2.0;
 
-  @PlatformSpec(platformType: PlatformType.desktop | PlatformType.web, not: true)
+  @Unavailable(platform: PlatformType.desktop | PlatformType.web)
   final scale = 1.0;
 
-  @PlatformSpec(platformType: PlatformType.android, renameTo: 'themeColor')
+  @Available(platform: PlatformType.android, rename: 'themeColor')
   final themeColorForAndroid = Colors.blue;
 
-  @PlatformSpec(platformType: PlatformType.ios, renameTo: 'themeColor')
+  @Available(platform: PlatformType.ios, rename: 'themeColor')
   final themeColorForIos = Colors.cyan;
 
-  @PlatformSpec(platformType: PlatformType.android | PlatformType.ios, not: true)
+  @Unavailable(platform: PlatformType.android | PlatformType.ios)
   final themeColor = Colors.teal;
 
   @override

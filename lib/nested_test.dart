@@ -1,6 +1,6 @@
-@PlatformBuilder()
-import 'package:flutter/material.dart';
+@PlatformBuilder(import: false)
 import 'package:platform_code_builder/platform_code_builder.dart';
+import 'package:flutter/material.dart';
 
 @Available(platform: PlatformType.desktop)
 class Test01 {

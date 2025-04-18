@@ -1,5 +1,8 @@
 class PlatformBuilder {
-  const PlatformBuilder();
+  final bool import;
+  const PlatformBuilder({
+    this.import = true,
+  });
 }
 
 class Available {
